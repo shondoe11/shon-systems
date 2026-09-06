@@ -1,0 +1,21 @@
+#! kept local only, never part of repo history
+README.md
+docs/
+
+#! dependencies
+node_modules/
+
+#! next.js output
+.next/
+out/
+
+#! env
+.env
+.env*.local
+
+#! vercel
+.vercel
+
+#! misc
+.DS_Store
+*.log
