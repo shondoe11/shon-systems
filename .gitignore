@@ -1,21 +1,24 @@
-#! kept local only, never part of repo history
-README.md
+# local only
 docs/
 
-#! dependencies
+# deps
 node_modules/
 
-#! next.js output
+# next.js output
 .next/
 out/
 
-#! env
+# env
 .env
 .env*.local
 
-#! vercel
+# vercel
 .vercel
 
-#! misc
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
 .DS_Store
 *.log
