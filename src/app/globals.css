@@ -7,23 +7,32 @@
   color-scheme: dark;
   --bg: #000000;
   --bg-raised: #0a0a0a;
-  --fg: #ececec;
-  --fg-muted: #9a9a9a;
-  --fg-faint: #5c5c5c;
-  --hairline: rgba(255, 255, 255, 0.12);
-  --hairline-strong: rgba(255, 255, 255, 0.24);
+  --fg: #f2f2f2;
+  --fg-muted: #b8b8b8;
+  --fg-faint: #858585;
+  --hairline: rgba(255, 255, 255, 0.16);
+  --hairline-strong: rgba(255, 255, 255, 0.3);
   --signal: #8fb4ff;
   --signal-ink: #0b1a33;
   --warm: #f2b46d;
   --warm-ink: #2a1a05;
-  --selection: #ececec;
+  --selection: #facc15;
   --selection-fg: #000000;
+
+  /* hover colours by rest colour: bright (white) text -> teal, grey text -> yellow */
+  --hover-bright: #2dd4bf;
+  --hover-muted: #facc15;
 
   /* one-off accents. change these two lines to retune the hero:
       `orbit-hover` = ring text color while hovered,
       `status` = "open to roles" dot. */
   --orbit-hover: #ff7a00;
   --status: #c6ff3d;
+
+  /* readability over animated bgs:
+      `scrim` darkens whole canvas layer, `text-lift` is shadow under every glyph. */
+  --scrim: rgba(0, 0, 0, 0.42);
+  --text-lift: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 14px rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
@@ -40,6 +49,8 @@
   --color-warm-ink: var(--warm-ink);
   --color-orbit-hover: var(--orbit-hover);
   --color-status: var(--status);
+  --color-hover-bright: var(--hover-bright);
+  --color-hover-muted: var(--hover-muted);
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
@@ -91,6 +102,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* every glyph in pg gets dark lift so it stays legible wherever art is bright */
+main,
+header,
+footer {
+  text-shadow: var(--text-lift);
+}
+
+/* sits on top of bg canvas inside its fixed layer */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 30%, transparent 70%, rgba(0, 0, 0, 0.6)),
+    var(--scrim);
+}
+
 ::selection {
   background: var(--selection);
   color: var(--selection-fg);
@@ -105,7 +132,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* inline links: no underline. rest color is inherited, hover shifts to signal accent w soft glow*/
+/* inline links: no underline. rest color is inherited; hover colour depends on rest color
+   (bright text -> teal, grey text -> yellow) with soft glow in same hue */
 .link {
   color: inherit;
   text-decoration: none;
@@ -115,11 +143,18 @@ body {
 }
 
 .link:hover {
-  color: var(--signal);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--signal) 45%, transparent);
+  color: var(--hover-bright);
+  text-shadow: 0 0 18px color-mix(in srgb, currentColor 45%, transparent);
 }
 
-/* boxed nav items: hairline box, lifts to stronger hairline + raised ground on hover */
+/* links sitting inside grey copy (about, role descriptions) go yellow instead */
+.text-fg-muted .link:hover,
+.text-fg-faint .link:hover,
+.link.text-fg-muted:hover {
+  color: var(--hover-muted);
+}
+
+/* boxed nav items: hairline box; grey labels go yellow on hover, the white ST mark goes teal */
 .nav-box {
   display: inline-flex;
   align-items: center;
@@ -134,9 +169,40 @@ body {
 }
 
 .nav-box:hover {
-  color: var(--fg);
-  border-color: var(--hairline-strong);
+  color: var(--hover-muted);
+  border-color: currentColor;
   background-color: var(--bg-raised);
+}
+
+.nav-box.text-fg:hover {
+  color: var(--hover-bright);
+}
+
+/* skill / tech pills: outline lights up to pill's own accent w thin outer ring */
+.tag {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.tag:hover {
+  border-color: currentColor;
+  box-shadow: 0 0 0 1px currentColor, 0 0 12px color-mix(in srgb, currentColor 35%, transparent);
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+/* proj screenshots: hairline turns signal blue (soft outer glow) */
+.project-image {
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.project-image-link:hover .project-image,
+.project-image-link:focus-visible .project-image {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 1px var(--signal), 0 0 24px color-mix(in srgb, var(--signal) 40%, transparent);
 }
 
 :focus-visible {

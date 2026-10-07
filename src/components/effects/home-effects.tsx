@@ -8,7 +8,13 @@ const AeroShards = dynamic(() => import("@/components/reactbits/AeroShards"), { 
 const GlowCursor = dynamic(() => import("@/components/reactbits/GlowCursor"), { ssr: false });
 
 //~ retune here
-const SHARDS = { backgroundColor: "#000000", shardColor: "#10B981", accentColor: "#06B6D4" };
+const SHARDS = {
+  backgroundColor: "#000000",
+  shardColor: "#10B981",
+  accentColor: "#06B6D4",
+  glow: 0.8,
+  bloom: 0.35,
+};
 const CURSOR = { secondaryColor: "#4611e3", fadeDuration: 100 };
 
 export function HomeEffects() {
@@ -20,6 +26,7 @@ export function HomeEffects() {
     <>
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
         <AeroShards {...SHARDS} />
+        <div className="scrim" />
       </div>
       {finePointer && <GlowCursor global {...CURSOR} />}
     </>
