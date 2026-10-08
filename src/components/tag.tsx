@@ -11,7 +11,7 @@ export function TagList({ tags, label }: { tags: TagT[]; label: string }) {
       {tags.map((t) => (
         <li
           key={t.label}
-          className={`rounded-full border px-2.5 py-0.5 text-[0.8125rem] leading-5 ${tone[t.kind]}`}
+          className={`tag rounded-full border px-2.5 py-0.5 text-[0.8125rem] leading-5 ${tone[t.kind]}`}
         >
           {t.label}
         </li>

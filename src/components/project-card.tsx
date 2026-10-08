@@ -32,7 +32,7 @@ export function ProjectCard({
         rel="noopener noreferrer"
         aria-label={`Open ${project.name}`}
         tabIndex={-1}
-        className="md:col-span-5"
+        className="project-image-link md:col-span-5"
       >
         <Image
           src={project.image.src}
@@ -41,7 +41,7 @@ export function ProjectCard({
           height={project.image.height}
           priority={priority}
           sizes="(min-width: 1024px) 28rem, (min-width: 768px) 40vw, 100vw"
-          className="aspect-[16/10] w-full rounded-sm border border-hairline object-cover object-top"
+          className="project-image aspect-[16/10] w-full rounded-sm border border-hairline object-cover object-top"
         />
       </a>
 
