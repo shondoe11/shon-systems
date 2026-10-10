@@ -17,9 +17,9 @@ export function SiteHeader() {
         >
           ST
         </Link>
-        <nav aria-label="Primary" className="flex items-center gap-2 text-sm">
+        <nav aria-label="Primary" className="flex items-center gap-1.5 text-xs sm:gap-2 sm:text-sm">
           {nav.map((item) => (
-            <Link key={item.label} href={item.href} className="nav-box px-3 py-1.5">
+            <Link key={item.label} href={item.href} className="nav-box px-2.5 py-1.5 sm:px-3">
               {item.label}
             </Link>
           ))}

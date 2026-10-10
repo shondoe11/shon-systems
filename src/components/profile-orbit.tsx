@@ -11,13 +11,13 @@ export function ProfileOrbit() {
   return (
     //~ `reducedMotion="user"` stops spin fr ppl who asked their os fr less motion
     <MotionConfig reducedMotion="user">
-      <div className="relative mx-auto size-72 md:size-88">
+      <div className="relative mx-auto size-72 xl:size-88">
         <CircularText
           text={ORBIT_TEXT}
           spinDuration={5}
           onHover="slowDown"
           className="size-full text-fg transition-colors duration-300 hover:text-orbit-hover"
-          letterClassName="font-display text-sm font-bold tracking-[0.18em] md:text-base"
+          letterClassName="font-display text-sm font-bold tracking-[0.18em] xl:text-base"
         />
         <Image
           src="/shawn-tan.jpeg"
@@ -25,8 +25,8 @@ export function ProfileOrbit() {
           width={1600}
           height={1600}
           priority
-          sizes="(min-width: 768px) 18rem, 14rem"
-          className="absolute left-1/2 top-1/2 size-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-hairline object-cover md:size-72"
+          sizes="(min-width: 1280px) 18rem, 14rem"
+          className="absolute left-1/2 top-1/2 size-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-hairline object-cover xl:size-72"
         />
       </div>
     </MotionConfig>
