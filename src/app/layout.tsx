@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
+import { BackToTop } from "@/components/back-to-top";
+import { ClickSparkLayer } from "@/components/effects/click-spark-layer";
 import { PersonJsonLd } from "@/components/person-json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -52,6 +54,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <BackToTop />
+        <ClickSparkLayer />
         <PersonJsonLd />
       </body>
     </html>
