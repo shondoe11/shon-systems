@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ProjectsEffects } from "@/components/effects/projects-effects";
 import { ProjectCard } from "@/components/project-card";
+import { WarpHeading } from "@/components/warp-heading";
 import { projects } from "@/lib/content";
 import { getProfileStats, getRepoStats } from "@/lib/github";
 import { site, socials } from "@/lib/site";
@@ -48,7 +49,7 @@ export default async function ProjectsPage() {
       <ProjectsEffects />
       <div className="space-y-16 pb-8 pt-12 md:space-y-24 md:pt-24">
         <section aria-label="Overview" className="space-y-6">
-          <h1 className="font-display text-display font-semibold">{title}</h1>
+          <WarpHeading text={title} />
           <div className="max-w-measure space-y-6">
             <p className="font-display text-xl leading-snug md:text-2xl">
               The full list, ever-growing.

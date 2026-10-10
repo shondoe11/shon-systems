@@ -5,7 +5,7 @@ import { HomeEffects } from "@/components/effects/home-effects";
 import { ExperienceItem } from "@/components/experience-item";
 import { ProfileOrbit } from "@/components/profile-orbit";
 import { ProjectCard } from "@/components/project-card";
-import SplitText from "@/components/reactbits/SplitText";
+import { HeroName } from "@/components/hero-name";
 import { Section } from "@/components/section";
 import { SocialLoop } from "@/components/social-loop";
 import { about, featuredProjects, roles } from "@/lib/content";
@@ -29,26 +29,14 @@ export default function HomePage() {
       <div className="space-y-24 pb-8 pt-12 md:space-y-32 md:pt-20">
         <section
           aria-label="Introduction"
-          className="grid gap-12 md:grid-cols-12 md:items-center md:gap-8"
+          className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-8"
         >
-          <div className="order-last md:order-0 md:col-span-4 md:col-start-9 md:justify-self-end">
+          <div className="order-last lg:order-0 lg:col-span-4 lg:col-start-9 lg:justify-self-end">
             <ProfileOrbit />
           </div>
 
-          <div className="space-y-8 md:col-span-8 md:col-start-1 md:row-start-1">
-            <SplitText
-              text={site.name}
-              tag="h1"
-              textAlign="left"
-              splitType="chars"
-              delay={40}
-              duration={0.9}
-              from={{ opacity: 0, y: "0.35em" }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0}
-              rootMargin="0px"
-              className="font-display text-display font-semibold"
-            />
+          <div className="space-y-8 lg:col-span-8 lg:col-start-1 lg:row-start-1">
+            <HeroName name={site.name} />
             <div className="max-w-measure space-y-5">
               <p className="font-display text-xl leading-snug md:text-2xl">
                 {site.role} in {site.location}. Before that, eight years
