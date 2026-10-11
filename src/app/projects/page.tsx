@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ProjectsEffects } from "@/components/effects/projects-effects";
 import { ProjectCard } from "@/components/project-card";
+import { StatNumber } from "@/components/stat-number";
 import { WarpHeading } from "@/components/warp-heading";
 import { projects } from "@/lib/content";
 import { getProfileStats, getRepoStats } from "@/lib/github";
@@ -21,8 +22,6 @@ export const metadata: Metadata = {
   },
 };
 
-const num = (n: number) => n.toLocaleString("en-SG");
-
 export default async function ProjectsPage() {
   const [profile, ...repoStats] = await Promise.all([
     getProfileStats(),
@@ -31,13 +30,13 @@ export default async function ProjectsPage() {
 
   const profileItems = profile
     ? [
-        { label: "Public repos", value: num(profile.publicRepos) },
-        { label: "Followers", value: num(profile.followers) },
+        { label: "Public repos", value: profile.publicRepos },
+        { label: "Followers", value: profile.followers },
         ...(profile.commitsThisYear !== null
           ? [
               {
                 label: `${profile.year} Contributions`,
-                value: num(profile.commitsThisYear),
+                value: profile.commitsThisYear,
               },
             ]
           : []),
@@ -63,7 +62,7 @@ export default async function ProjectsPage() {
                   <div key={it.label}>
                     <dt className="text-sm text-fg-faint">{it.label}</dt>
                     <dd className="font-display text-2xl font-medium">
-                      {it.value}
+                      <StatNumber value={it.value} />
                     </dd>
                   </div>
                 ))}
