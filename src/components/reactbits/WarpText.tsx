@@ -2,6 +2,8 @@
 
 /* eslint-disable */
 //* src: https://reactbits.dev/r/WarpText-TS-TW (ts + tailwind variant), vendored verbatim except fr this lint opt-out & an `align` prop: 'left' starts text at container's padding-left (read from computed style) instead of centring it. draws to canvas: pair it w real (sr-only) heading fr seo.
+//! also added: `pointerScope` ('window' tracks the cursor anywhere on the page, going active once it
+//! is within one canvas-height of the box) and `followSpeed` (per-frame easing toward the pointer).
 import { useEffect, useRef, type CSSProperties } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture, type OGLRenderingContext } from 'ogl';
 
@@ -21,6 +23,8 @@ export interface Props {
   letterSpacing?: string | number;
   lineHeight?: string | number;
   align?: 'left' | 'center';
+  pointerScope?: 'canvas' | 'window';
+  followSpeed?: number;
   className?: string;
   style?: CSSProperties;
 }
@@ -282,6 +286,8 @@ const WarpText = ({
   refraction = 0.018,
   ripple = true,
   align = 'center',
+  pointerScope = 'canvas',
+  followSpeed = 0.12,
   fontSize = 'clamp(3rem, 10vw, 9rem)',
   fontWeight = 800,
   fontFamily = 'inherit',
@@ -481,6 +487,17 @@ const WarpText = ({
       if (rect.width <= 0 || rect.height <= 0) return;
       pointer.tx = (event.clientX - rect.left) / rect.width;
       pointer.ty = 1 - (event.clientY - rect.top) / rect.height;
+      //! window scope: only engage once the cursor is near the box, so the idle drift still plays elsewhere
+      if (pointerScope === 'window') {
+        const reach = rect.height;
+        const near =
+          event.clientX > rect.left - reach &&
+          event.clientX < rect.right + reach &&
+          event.clientY > rect.top - reach &&
+          event.clientY < rect.bottom + reach;
+        pointer.activeTarget = near ? 1 : 0;
+        return;
+      }
       pointer.activeTarget = 1;
     };
 
@@ -519,7 +536,7 @@ const WarpText = ({
       const idleY = 0.5 + Math.cos(elapsed * 0.27) * 0.1;
       const targetX = pointer.activeTarget > 0 ? pointer.tx : idleX;
       const targetY = pointer.activeTarget > 0 ? pointer.ty : idleY;
-      const damping = pointer.activeTarget > 0 ? 0.12 : 0.035;
+      const damping = pointer.activeTarget > 0 ? followSpeed : 0.035;
 
       pointer.x += (targetX - pointer.x) * damping;
       pointer.y += (targetY - pointer.y) * damping;
@@ -550,8 +567,10 @@ const WarpText = ({
     );
     intersectionObserver.observe(container);
 
-    canvas.addEventListener('pointermove', onPointerMove);
-    canvas.addEventListener('pointerleave', onPointerLeave);
+    const pointerTarget: EventTarget = pointerScope === 'window' ? window : canvas;
+    const leaveTarget: EventTarget = pointerScope === 'window' ? document.documentElement : canvas;
+    pointerTarget.addEventListener('pointermove', onPointerMove as EventListener);
+    leaveTarget.addEventListener('pointerleave', onPointerLeave);
     canvas.addEventListener('webglcontextlost', onContextLost, false);
     document.addEventListener('visibilitychange', onVisibility);
     mediaQuery?.addEventListener('change', onReducedMotion);
@@ -567,8 +586,8 @@ const WarpText = ({
       if (raf) cancelAnimationFrame(raf);
       resizeObserver?.disconnect();
       intersectionObserver?.disconnect();
-      canvas.removeEventListener('pointermove', onPointerMove);
-      canvas.removeEventListener('pointerleave', onPointerLeave);
+      pointerTarget.removeEventListener('pointermove', onPointerMove as EventListener);
+      leaveTarget.removeEventListener('pointerleave', onPointerLeave);
       canvas.removeEventListener('webglcontextlost', onContextLost);
       document.removeEventListener('visibilitychange', onVisibility);
       mediaQuery?.removeEventListener('change', onReducedMotion);
@@ -586,7 +605,7 @@ const WarpText = ({
 
       if (canvas.parentNode === container) container.removeChild(canvas);
     };
-  }, []);
+  }, [pointerScope, followSpeed]);
 
   return (
     <div
