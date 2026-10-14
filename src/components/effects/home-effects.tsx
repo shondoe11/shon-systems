@@ -1,34 +1,50 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffectsSettings } from "@/lib/effects-settings";
 import { FINE_POINTER, REDUCED_MOTION, useMediaQuery } from "./use-media-query";
 
-//& webgl/webgpu code loaded client-only after hydration so it never blocks first paint
+//& webgl/webgpu code loaded client-only aft hydration so never blocks first paint
 const AeroShards = dynamic(() => import("@/components/reactbits/AeroShards"), { ssr: false });
 const GlowCursor = dynamic(() => import("@/components/reactbits/GlowCursor"), { ssr: false });
 
-//~ retune here
-const SHARDS = {
-  backgroundColor: "#000000",
-  shardColor: "#10B981",
-  accentColor: "#06B6D4",
-  glow: 0.8,
-  bloom: 0.35,
-};
-const CURSOR = { secondaryColor: "#4611e3", fadeDuration: 100 };
-
+//& everything user-tunable lives in lib/effects-settings.ts (defaults + the nav settings menu)
 export function HomeEffects() {
   const reducedMotion = useMediaQuery(REDUCED_MOTION);
   const finePointer = useMediaQuery(FINE_POINTER);
+  const { cursor, background } = useEffectsSettings();
   if (reducedMotion) return null;
+
+  const shards = background.home;
 
   return (
     <>
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
-        <AeroShards {...SHARDS} />
-        <div className="scrim" />
-      </div>
-      {finePointer && <GlowCursor global {...CURSOR} />}
+      {background.enabled && (
+        <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+          {/* keyed so color/intensity changes rebuild gpu pipeline cleanly */}
+          <AeroShards
+            key={JSON.stringify(shards)}
+            backgroundColor="#000000"
+            shardColor={shards.shardColor}
+            accentColor={shards.accentColor}
+            glow={shards.glow}
+            bloom={shards.bloom}
+            speed={shards.speed}
+          />
+          <div className="scrim" />
+        </div>
+      )}
+      {cursor.enabled && finePointer && (
+        <GlowCursor
+          global
+          color={cursor.color}
+          secondaryColor={cursor.secondaryColor}
+          trailLength={cursor.trailLength}
+          trailWidth={cursor.trailWidth}
+          glowIntensity={cursor.glowIntensity}
+          fadeDuration={cursor.fadeDuration}
+        />
+      )}
     </>
   );
 }
