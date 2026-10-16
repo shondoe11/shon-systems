@@ -94,6 +94,8 @@ html {
 }
 
 body {
+  /* clip, not hidden: cuz stops transformed/animated elements frm ever creating horizontal scrollbar w/o turning body into scroll container */
+  overflow-x: clip;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
@@ -132,8 +134,7 @@ footer {
   font-variant-numeric: tabular-nums;
 }
 
-/* inline links: no underline. rest color is inherited; hover colour depends on rest color
-   (bright text -> teal, grey text -> yellow) with soft glow in same hue */
+/* inline links: no underline. rest color is inherited; hover color depends on rest color(bright text -> teal, grey text -> yellow) w soft glow in same hue */
 .link {
   color: inherit;
   text-decoration: none;
@@ -180,16 +181,25 @@ footer {
 
 /* skill / tech pills: outline lights up to pill's own accent w thin outer ring */
 .tag {
+  cursor: default;
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background-color 180ms ease;
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    text-shadow 220ms ease,
+    background-color 220ms ease;
 }
 
+/* glow, not weight: lights up w pill's own accent, w outer halo + inner wash (inset). label picks up soft text glow */
 .tag:hover {
   border-color: currentColor;
-  box-shadow: 0 0 0 1px currentColor, 0 0 12px color-mix(in srgb, currentColor 35%, transparent);
-  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  box-shadow:
+    0 0 8px color-mix(in srgb, currentColor 55%, transparent),
+    0 0 20px color-mix(in srgb, currentColor 30%, transparent),
+    inset 0 0 8px color-mix(in srgb, currentColor 18%, transparent);
+  text-shadow:
+    0 0 6px color-mix(in srgb, currentColor 70%, transparent),
+    0 0 14px color-mix(in srgb, currentColor 40%, transparent);
+  background-color: color-mix(in srgb, currentColor 6%, transparent);
 }
 
 /* proj screenshots: hairline turns signal blue (soft outer glow) */
