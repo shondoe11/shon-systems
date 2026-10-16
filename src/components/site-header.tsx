@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SettingsMenu } from "./effects/settings-menu";
 
 const nav = [
   { label: "About", href: "/#about" },
@@ -23,6 +24,7 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          <SettingsMenu />
         </nav>
       </div>
     </header>
