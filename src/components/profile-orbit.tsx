@@ -11,7 +11,8 @@ export function ProfileOrbit() {
   return (
     //~ `reducedMotion="user"` stops spin fr ppl who asked their os fr less motion
     <MotionConfig reducedMotion="user">
-      <div className="relative mx-auto size-72 xl:size-88">
+      {/* overflow-hidden: each ring letter = full-size rotated square, rotated boxes extend pg's scroll area. clipping to circle costs nothing visually (glyphs sit on ring). */}
+      <div className="relative mx-auto size-72 overflow-hidden rounded-full xl:size-88">
         <CircularText
           text={ORBIT_TEXT}
           spinDuration={5}
