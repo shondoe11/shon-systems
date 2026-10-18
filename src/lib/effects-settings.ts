@@ -27,6 +27,7 @@ export type EffectsSettings = {
     home: { shardColor: string; accentColor: string; glow: number; bloom: number; speed: number };
     projects: { colors: [string, string, string]; mouseForce: number; cursorSize: number };
   };
+  borders: { enabled: boolean; color: string; intensity: number; speed: number; thickness: number };
 };
 
 export const DEFAULTS: EffectsSettings = {
@@ -45,6 +46,7 @@ export const DEFAULTS: EffectsSettings = {
     home: { shardColor: "#10b981", accentColor: "#06b6d4", glow: 0.8, bloom: 0.35, speed: 1 },
     projects: { colors: ["#34d399", "#22d3ee", "#cbd5e1"], mouseForce: 40, cursorSize: 130 },
   },
+  borders: { enabled: true, color: "#2dd4bf", intensity: 0.8, speed: 1, thickness: 1.5 },
 };
 
 const KEY = "shon-systems.effects.v1";
@@ -64,6 +66,7 @@ function merge(saved: Partial<EffectsSettings> | null): EffectsSettings {
       home: { ...DEFAULTS.background.home, ...saved.background?.home },
       projects: { ...DEFAULTS.background.projects, ...saved.background?.projects },
     },
+    borders: { ...DEFAULTS.borders, ...saved.borders },
   };
 }
 

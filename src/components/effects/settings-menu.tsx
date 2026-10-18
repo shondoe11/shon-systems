@@ -37,7 +37,7 @@ function Switch({
     >
       <span
         className={`absolute top-0.5 size-3.5 rounded-full transition-[left,background-color] ${
-          checked ? "left-[1.125rem] bg-hover-bright" : "left-0.5 bg-fg-faint"
+          checked ? "left-4.5 bg-hover-bright" : "left-0.5 bg-fg-faint"
         }`}
       />
     </button>
@@ -152,7 +152,7 @@ export function SettingsMenu() {
     };
   }, [open]);
 
-  const { cursor, spark, background } = settings;
+  const { cursor, spark, background, borders } = settings;
   const isDefault = JSON.stringify(settings) === JSON.stringify(DEFAULTS);
 
   return (
@@ -164,7 +164,7 @@ export function SettingsMenu() {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className={`nav-box size-8 sm:size-[2.125rem] ${open ? "text-hover-muted" : ""}`}
+        className={`nav-box size-8 sm:size-8.5 ${open ? "text-hover-muted" : ""}`}
       >
         <SlidersHorizontal size={15} strokeWidth={1.75} aria-hidden="true" />
       </button>
@@ -367,6 +367,46 @@ export function SettingsMenu() {
                 </Row>
               </>
             )}
+          </Group>
+
+          <Group
+            title="Project borders"
+            enabled={borders.enabled}
+            onToggle={(v) => updateSettings(set("borders", { enabled: v }))}
+          >
+            <Row label="Colour">
+              <Color value={borders.color} onChange={(v) => updateSettings(set("borders", { color: v }))} />
+            </Row>
+            <Row label="Intensity">
+              <Range
+                value={borders.intensity}
+                min={0.2}
+                max={1.5}
+                step={0.1}
+                onChange={(v) => updateSettings(set("borders", { intensity: v }))}
+                format={(v) => v.toFixed(1)}
+              />
+            </Row>
+            <Row label="Speed">
+              <Range
+                value={borders.speed}
+                min={0.2}
+                max={3}
+                step={0.1}
+                onChange={(v) => updateSettings(set("borders", { speed: v }))}
+                format={(v) => `${v.toFixed(1)}x`}
+              />
+            </Row>
+            <Row label="Thickness">
+              <Range
+                value={borders.thickness}
+                min={0.5}
+                max={4}
+                step={0.25}
+                onChange={(v) => updateSettings(set("borders", { thickness: v }))}
+                format={(v) => `${v}px`}
+              />
+            </Row>
           </Group>
 
           <div className="flex items-center justify-between border-t border-hairline pt-3 text-xs">
