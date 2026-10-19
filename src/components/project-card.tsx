@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { IoLogoGithub } from "react-icons/io5";
 import type { Project } from "@/lib/content";
 import type { RepoStats } from "@/lib/github";
+import { ElectricFrame } from "./effects/electric-frame";
 import { RepoStatsList } from "./repo-stats";
 import { TagList } from "./tag";
 
@@ -22,9 +23,10 @@ export function ProjectCard({
   const headingId = `project-${project.slug}`;
 
   return (
+    <ElectricFrame>
     <article
       aria-labelledby={headingId}
-      className="grid gap-5 py-10 first:pt-0 last:pb-0 md:grid-cols-12 md:gap-8"
+      className="grid gap-5 md:grid-cols-12 md:gap-8"
     >
       <a
         href={primaryHref}
@@ -96,5 +98,6 @@ export function ProjectCard({
         </ul>
       </div>
     </article>
+    </ElectricFrame>
   );
 }

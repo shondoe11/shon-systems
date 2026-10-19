@@ -93,7 +93,7 @@ export default function HomePage() {
           title="Recent projects"
           aside={<p>Always building.</p>}
         >
-          <div className="divide-y divide-hairline">
+          <div className="space-y-6 md:space-y-8">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}

@@ -85,7 +85,7 @@ export default async function ProjectsPage() {
           aria-label="All projects"
           className="border-t border-hairline pt-4"
         >
-          <div className="divide-y divide-hairline">
+          <div className="space-y-6 md:space-y-8">
             {projects.map((project, i) => (
               <ProjectCard
                 key={project.slug}
