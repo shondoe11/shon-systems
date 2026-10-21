@@ -8,11 +8,15 @@ export type EffectsSettings = {
   cursor: {
     enabled: boolean;
     color: string;
-    secondaryColor: string;
-    trailLength: number;
+    intensity: number;
     trailWidth: number;
-    glowIntensity: number;
-    fadeDuration: number;
+    linger: number;
+    glow: number;
+    hotspot: number;
+    followSpeed: number;
+    grain: number;
+    clickBurst: boolean;
+    quality: "low" | "medium" | "high";
   };
   spark: {
     enabled: boolean;
@@ -33,12 +37,17 @@ export type EffectsSettings = {
 export const DEFAULTS: EffectsSettings = {
   cursor: {
     enabled: true,
-    color: "#67e8f9",
-    secondaryColor: "#4611e3",
-    trailLength: 40,
-    trailWidth: 8,
-    glowIntensity: 1.9,
-    fadeDuration: 100,
+    //~ note one color only: fluid shader shows mostly "aged" tint, which GlowCursor derives frm `color` (+8° hue) when no secondary is given. exposing two colors was confusing
+    color: "#2dd4bf",
+    intensity: 1.3,
+    trailWidth: 3,
+    linger: 1.4,
+    glow: 1.2,
+    hotspot: 0.8,
+    followSpeed: 0.6,
+    grain: 0,
+    clickBurst: true,
+    quality: "high",
   },
   spark: { enabled: true, color: "#fff80d", count: 8, size: 10, radius: 15, duration: 400 },
   background: {
@@ -49,7 +58,8 @@ export const DEFAULTS: EffectsSettings = {
   borders: { enabled: true, color: "#2dd4bf", intensity: 0.8, speed: 1, thickness: 1.5 },
 };
 
-const KEY = "shon-systems.effects.v1";
+//& bump when group's shape changes incompatibly; old saves simply ignored
+const KEY = "shon-systems.effects.v3";
 const listeners = new Set<() => void>();
 let state: EffectsSettings = DEFAULTS;
 let loaded = false;
@@ -113,4 +123,11 @@ function subscribe(l: () => void) {
 
 export function useEffectsSettings(): EffectsSettings {
   return useSyncExternalStore(subscribe, getSettings, () => DEFAULTS);
+}
+
+//& maps cursor group onto GlowCursor props; `enabled` handled by caller
+export function cursorProps(c: EffectsSettings["cursor"]) {
+  const { enabled: _enabled, ...props } = c;
+  void _enabled;
+  return props;
 }
