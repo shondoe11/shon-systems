@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffectsSettings } from "@/lib/effects-settings";
+import { cursorProps, useEffectsSettings } from "@/lib/effects-settings";
 import { FINE_POINTER, REDUCED_MOTION, useMediaQuery } from "./use-media-query";
 
 //& webgl code loaded client-only after hydration so it never blocks first paint
@@ -42,15 +42,7 @@ export function ProjectsEffects() {
         </div>
       )}
       {cursor.enabled && finePointer && (
-        <GlowCursor
-          global
-          color={cursor.color}
-          secondaryColor={cursor.secondaryColor}
-          trailLength={cursor.trailLength}
-          trailWidth={cursor.trailWidth}
-          glowIntensity={cursor.glowIntensity}
-          fadeDuration={cursor.fadeDuration}
-        />
+        <GlowCursor global {...cursorProps(cursor)} />
       )}
     </>
   );
