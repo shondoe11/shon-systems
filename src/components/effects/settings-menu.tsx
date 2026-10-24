@@ -98,6 +98,35 @@ function Range({
   );
 }
 
+function Segmented<T extends string>({
+  value,
+  options,
+  onChange,
+}: {
+  value: T;
+  options: readonly T[];
+  onChange: (v: T) => void;
+}) {
+  return (
+    <span role="radiogroup" className="inline-flex rounded-md border border-hairline p-0.5 text-[0.7rem]">
+      {options.map((o) => (
+        <button
+          key={o}
+          type="button"
+          role="radio"
+          aria-checked={o === value}
+          onClick={() => onChange(o)}
+          className={`rounded px-2 py-0.5 capitalize transition-colors ${
+            o === value ? "bg-fg text-bg" : "text-fg-muted hover:text-fg"
+          }`}
+        >
+          {o}
+        </button>
+      ))}
+    </span>
+  );
+}
+
 function Group({
   title,
   enabled,
@@ -174,7 +203,7 @@ export function SettingsMenu() {
           id={panelId}
           role="dialog"
           aria-label="Effect settings"
-          className="absolute right-0 top-full z-50 mt-2 w-[min(20rem,calc(100vw-2.5rem))] space-y-3 rounded-lg border border-hairline bg-bg/90 p-4 shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-md"
+          className="absolute right-0 top-full z-50 mt-2 max-h-[calc(100dvh-5.5rem)] w-[min(20rem,calc(100vw-2.5rem))] space-y-3 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-bg/90 p-4 shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-md"
         >
           <Group
             title="Cursor glow"
@@ -184,47 +213,88 @@ export function SettingsMenu() {
             <Row label="Colour">
               <Color value={cursor.color} onChange={(v) => updateSettings(set("cursor", { color: v }))} />
             </Row>
-            <Row label="Secondary">
-              <Color
-                value={cursor.secondaryColor}
-                onChange={(v) => updateSettings(set("cursor", { secondaryColor: v }))}
-              />
-            </Row>
-            <Row label="Trail length">
+            <Row label="Intensity">
               <Range
-                value={cursor.trailLength}
-                min={8}
-                max={64}
-                onChange={(v) => updateSettings(set("cursor", { trailLength: v }))}
+                value={cursor.intensity}
+                min={0.3}
+                max={3}
+                step={0.1}
+                onChange={(v) => updateSettings(set("cursor", { intensity: v }))}
+                format={(v) => v.toFixed(1)}
               />
             </Row>
             <Row label="Thickness">
               <Range
                 value={cursor.trailWidth}
-                min={2}
-                max={24}
+                min={1}
+                max={8}
+                step={0.5}
                 onChange={(v) => updateSettings(set("cursor", { trailWidth: v }))}
-                format={(v) => `${v}px`}
+                format={(v) => `${v}`}
+              />
+            </Row>
+            <Row label="Linger">
+              <Range
+                value={cursor.linger}
+                min={0.2}
+                max={4}
+                step={0.1}
+                onChange={(v) => updateSettings(set("cursor", { linger: v }))}
+                format={(v) => `${v.toFixed(1)}s`}
               />
             </Row>
             <Row label="Glow">
               <Range
-                value={cursor.glowIntensity}
-                min={0.5}
+                value={cursor.glow}
+                min={0}
                 max={3}
                 step={0.1}
-                onChange={(v) => updateSettings(set("cursor", { glowIntensity: v }))}
+                onChange={(v) => updateSettings(set("cursor", { glow: v }))}
                 format={(v) => v.toFixed(1)}
               />
             </Row>
-            <Row label="Fade">
+            <Row label="Hotspot">
               <Range
-                value={cursor.fadeDuration}
-                min={50}
-                max={1500}
-                step={50}
-                onChange={(v) => updateSettings(set("cursor", { fadeDuration: v }))}
-                format={(v) => `${v}ms`}
+                value={cursor.hotspot}
+                min={0}
+                max={2}
+                step={0.1}
+                onChange={(v) => updateSettings(set("cursor", { hotspot: v }))}
+                format={(v) => v.toFixed(1)}
+              />
+            </Row>
+            <Row label="Follow speed">
+              <Range
+                value={cursor.followSpeed}
+                min={0.1}
+                max={1}
+                step={0.05}
+                onChange={(v) => updateSettings(set("cursor", { followSpeed: v }))}
+                format={(v) => v.toFixed(2)}
+              />
+            </Row>
+            <Row label="Grain">
+              <Range
+                value={cursor.grain}
+                min={0}
+                max={1}
+                step={0.05}
+                onChange={(v) => updateSettings(set("cursor", { grain: v }))}
+                format={(v) => v.toFixed(2)}
+              />
+            </Row>
+            <Row label="Click burst">
+              <Switch
+                checked={cursor.clickBurst}
+                onChange={(v) => updateSettings(set("cursor", { clickBurst: v }))}
+                label="Click burst on or off"
+              />
+            </Row>
+            <Row label="Quality">
+              <Segmented
+                value={cursor.quality}
+                options={["low", "medium", "high"] as const}
+                onChange={(v) => updateSettings(set("cursor", { quality: v }))}
               />
             </Row>
           </Group>
