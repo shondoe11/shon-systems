@@ -16,7 +16,7 @@
   --signal-ink: #0b1a33;
   --warm: #f2b46d;
   --warm-ink: #2a1a05;
-  --selection: #facc15;
+  --selection: #2dd4bf;
   --selection-fg: #000000;
 
   /* hover colours by rest colour: bright (white) text -> teal, grey text -> yellow */
@@ -169,7 +169,9 @@ footer {
     background-color 180ms ease;
 }
 
-.nav-box:hover {
+/*! `aria-expanded="true"` keeps toggle (settings) lit while panel is open. this lives here rather than as util class because unlayered `.nav-box` would out-rank tailwind's utils */
+.nav-box:hover,
+.nav-box[aria-expanded="true"] {
   color: var(--hover-muted);
   border-color: currentColor;
   background-color: var(--bg-raised);
