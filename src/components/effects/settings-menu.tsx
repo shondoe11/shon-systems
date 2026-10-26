@@ -193,7 +193,7 @@ export function SettingsMenu() {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className={`nav-box size-8 sm:size-8.5 ${open ? "text-hover-muted" : ""}`}
+        className="nav-box size-8 sm:size-8.5"
       >
         <SlidersHorizontal size={15} strokeWidth={1.75} aria-hidden="true" />
       </button>
