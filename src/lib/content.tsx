@@ -156,6 +156,35 @@ export const roles: Role[] = [
 
 export const projects: Project[] = [
   {
+    slug: "toilets-with-bidets",
+    name: "Toilets with Bidets SG",
+    summary:
+      "Mobile-first map of every recorded bidet-equipped toilet in Singapore, with a synced, filterable list.",
+    description:
+      "Mobile-first Next.js app mapping every recorded bidet-equipped toilet across Singapore: a clustered MapLibre map paired with a synchronised, filterable list (region, facility type, accessibility). Data is pulled daily from a community Google Sheet and My Maps by GitHub Actions, with Supabase-backed crowd-sourced remarks and no sign-in.",
+    image: {
+      src: "/projects/toilets-with-bidets.png",
+      alt: "Toilets with Bidets SG: a clustered map of Singapore with bidet-toilet pins beside a filterable list of locations",
+      width: 1600,
+      height: 1001,
+    },
+    repo: {
+      owner: "shondoe11",
+      name: "twb",
+      href: "https://github.com/shondoe11/twb",
+    },
+    live: { href: "https://toiletswithbidets.vercel.app/", status: "online" },
+    tags: [
+      eng("TypeScript"),
+      eng("Next.js"),
+      eng("MapLibre GL"),
+      eng("Supabase"),
+      eng("TailwindCSS"),
+      eng("GitHub Actions"),
+    ],
+    featured: true,
+  },
+  {
     slug: "music-rewrapped",
     name: "Music Re-Wrapped",
     summary:
@@ -211,7 +240,7 @@ export const projects: Project[] = [
       eng("Node"),
       eng("HeroUI"),
     ],
-    featured: true,
+    featured: false,
   },
   {
     slug: "anything-dash",
