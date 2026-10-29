@@ -9,7 +9,7 @@ import { site, socials } from "@/lib/site";
 
 const title = "Projects";
 const description =
-  "Every project Shawn Tan has shipped, with live GitHub repository stats: Music Re-Wrapped (Flask + React Spotify dashboard), MaskOFF (MERN job platform), Anything-Dash and a Blackjack browser game.";
+  "Every project Shawn Tan has shipped, with live GitHub repository stats: Toilets with Bidets SG (Next.js + MapLibre map of Singapore), Music Re-Wrapped (Flask + React Spotify dashboard), MaskOFF (MERN job platform), Anything-Dash and a Blackjack browser game.";
 
 export const metadata: Metadata = {
   title,
