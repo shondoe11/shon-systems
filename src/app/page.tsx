@@ -94,8 +94,8 @@ export default function HomePage() {
           aside={<p>Always building.</p>}
         >
           <div className="space-y-6 md:space-y-8">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
+            {featuredProjects.map((project, index) => (
+              <ProjectCard key={project.slug} project={project} priority={index === 0}/>
             ))}
           </div>
           <p className="mt-10 text-sm">
