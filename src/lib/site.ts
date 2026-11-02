@@ -3,7 +3,7 @@ export const site = {
   legalName: "Shawn Hadri Tan",
   role: "Software Engineer",
   location: "Singapore",
-  url: "https://shawntan.com",
+  url: "https://shawntan.dev",
   email: "shawnhadritan@gmail.com",
   githubUser: "shondoe11",
   tagline:
