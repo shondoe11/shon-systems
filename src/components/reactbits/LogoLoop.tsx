@@ -311,7 +311,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     }, [effectiveHoverSpeed]);
 
     const renderLogoItem = useCallback(
-      (item: LogoItem, key: React.Key) => {
+      (item: LogoItem, key: React.Key, isClone = false) => {
         if (renderItem) {
           return (
             <li
@@ -378,6 +378,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             )}
             href={item.href}
             aria-label={itemAriaLabel || 'logo link'}
+            //~ clones are aria-hidden; keep them out of tab order but clickable (they're what's visible mid-scroll)
+            tabIndex={isClone ? -1 : undefined}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -414,7 +416,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             aria-hidden={copyIndex > 0}
             ref={copyIndex === 0 ? seqRef : undefined}
           >
-            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`))}
+            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`, copyIndex > 0))}
           </ul>
         )),
       [copyCount, logos, renderLogoItem, isVertical]
