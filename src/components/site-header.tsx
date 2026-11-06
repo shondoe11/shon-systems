@@ -13,7 +13,7 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-page items-center justify-between px-5 py-3 md:px-8">
         <Link
           href="/"
-          aria-label="Home"
+          aria-label="ST, home"
           className="nav-box size-9 font-display text-sm font-semibold tracking-tight text-fg"
         >
           ST
