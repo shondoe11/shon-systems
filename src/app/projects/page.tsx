@@ -82,9 +82,12 @@ export default async function ProjectsPage() {
         </section>
 
         <section
-          aria-label="All projects"
+          aria-labelledby="all-projects-heading"
           className="border-t border-hairline pt-4"
         >
+          <h2 id="all-projects-heading" className="sr-only">
+            All projects
+          </h2>
           <div className="space-y-6 md:space-y-8">
             {projects.map((project, i) => (
               <ProjectCard
