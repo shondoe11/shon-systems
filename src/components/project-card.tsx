@@ -41,8 +41,8 @@ export function ProjectCard({
           alt={project.image.alt}
           width={project.image.width}
           height={project.image.height}
-          loading={priority ? "eager" : "lazy"}
-          sizes="(min-width: 1024px) 28rem, (min-width: 768px) 40vw, 100vw"
+          priority={priority}
+          sizes="(min-width: 1024px) 28rem, (min-width: 768px) 40vw, calc(100vw - 5rem)"
           className="project-image aspect-[16/10] w-full rounded-sm border border-hairline object-cover object-top"
         />
       </a>
