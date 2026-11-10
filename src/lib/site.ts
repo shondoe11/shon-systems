@@ -4,7 +4,7 @@ export const site = {
   role: "Software Engineer",
   location: "Singapore",
   url: "https://shawntan.dev",
-  email: "shawnhadritan@gmail.com",
+  email: "contact@shawntan.dev",
   githubUser: "shondoe11",
   tagline:
     "Solving problems at the intersection of product and engineering, translating business and user needs into scalable technical solutions that ship.",
@@ -19,6 +19,6 @@ export const socials = {
     href: "https://www.linkedin.com/in/shawn-tan-43b3a9115/",
   },
   instagram: { label: "Instagram", href: "https://www.instagram.com/shtcj11/" },
-  email: { label: "Email", href: "mailto:shawnhadritan@gmail.com" },
+  email: { label: "Email", href: "mailto:contact@shawntan.dev" },
   resume: { label: "Résumé", href: "/resume.pdf" },
 } as const;
