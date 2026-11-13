@@ -303,12 +303,24 @@ export const LogoLoop = React.memo<LogoLoopProps>(
       [isVertical, scaleOnHover, className]
     );
 
-    const handleMouseEnter = useCallback(() => {
-      if (effectiveHoverSpeed !== undefined) setIsHovered(true);
-    }, [effectiveHoverSpeed]);
+    //& pointer events, mouse only: 1 touch tap fires emulated mouseenter w no matching. mouseleave, which left the loop paused forever on phones aft tapping link
+    const handleMouseEnter = useCallback(
+      (e: React.PointerEvent) => {
+        if (e.pointerType !== 'mouse') return;
+        if (effectiveHoverSpeed !== undefined) setIsHovered(true);
+      },
+      [effectiveHoverSpeed]
+    );
     const handleMouseLeave = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(false);
     }, [effectiveHoverSpeed]);
+
+    //& returning via back/fwd cache restores old js state; make sure we never resume paused
+    useEffect(() => {
+      const resume = () => setIsHovered(false);
+      window.addEventListener('pageshow', resume);
+      return () => window.removeEventListener('pageshow', resume);
+    }, []);
 
     const renderLogoItem = useCallback(
       (item: LogoItem, key: React.Key, isClone = false) => {
@@ -488,8 +500,8 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             isVertical ? 'flex-col h-max w-full' : 'flex-row w-max'
           )}
           ref={trackRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onPointerEnter={handleMouseEnter}
+          onPointerLeave={handleMouseLeave}
         >
           {logoLists}
         </div>
