@@ -35,7 +35,8 @@ export default function HomePage() {
             <ProfileOrbit />
           </div>
 
-          <div className="space-y-8 lg:col-span-8 lg:col-start-1 lg:row-start-1">
+          {/* min-w-0: social loop track is w-max; without this, grid column grows to fit it & overflows on mobile */}
+          <div className="min-w-0 space-y-8 lg:col-span-8 lg:col-start-1 lg:row-start-1">
             <HeroName name={site.name} />
             <div className="max-w-measure space-y-5">
               <p className="font-display text-xl leading-snug md:text-2xl">
@@ -55,7 +56,7 @@ export default function HomePage() {
                 Open to software engineering roles
               </p>
             </div>
-            <div className="max-w-measure">
+            <div className="min-w-0 max-w-measure">
               <SocialLoop />
             </div>
           </div>
