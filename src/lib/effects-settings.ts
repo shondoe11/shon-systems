@@ -32,6 +32,7 @@ export type EffectsSettings = {
     projects: { colors: [string, string, string]; mouseForce: number; cursorSize: number };
   };
   borders: { enabled: boolean; color: string; intensity: number; speed: number; thickness: number };
+  textGlow: { enabled: boolean };
 };
 
 export const DEFAULTS: EffectsSettings = {
@@ -56,6 +57,7 @@ export const DEFAULTS: EffectsSettings = {
     projects: { colors: ["#34d399", "#22d3ee", "#cbd5e1"], mouseForce: 40, cursorSize: 130 },
   },
   borders: { enabled: true, color: "#2dd4bf", intensity: 0.8, speed: 1, thickness: 1.5 },
+  textGlow: { enabled: true },
 };
 
 //& bump when group's shape changes incompatibly; old saves simply ignored
@@ -77,6 +79,7 @@ function merge(saved: Partial<EffectsSettings> | null): EffectsSettings {
       projects: { ...DEFAULTS.background.projects, ...saved.background?.projects },
     },
     borders: { ...DEFAULTS.borders, ...saved.borders },
+    textGlow: { ...DEFAULTS.textGlow, ...saved.textGlow },
   };
 }
 
