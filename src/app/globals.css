@@ -19,7 +19,10 @@
 
   /* hover colors by rest color: bright (white) text -> teal, grey text -> yellow */
   --hover-bright: #2dd4bf;
-  --hover-muted: #facc15;
+  --hover-muted: #ffe94a;
+
+  /* grey paragraphs light up to this on hover (settings: text glow) */
+  --text-glow: #b4f7ea;
 
   /* one-off accents:
       `orbit-hover` = ring text color while hovered,
@@ -149,11 +152,37 @@ main {
   text-shadow: 0 0 18px color-mix(in srgb, currentColor 45%, transparent);
 }
 
+/* links inside grey copy rest white so they read as clickable at a glance */
+.text-fg-muted .link,
+.text-fg-faint .link {
+  color: var(--fg);
+}
+
 /* links sitting inside grey copy (about, role descriptions) go yellow instead */
 .text-fg-muted .link:hover,
 .text-fg-faint .link:hover,
 .link.text-fg-muted:hover {
   color: var(--hover-muted);
+}
+
+/* text glow: grey paragraphs in pg light up teal while hovered, so the block being read
+    stands out from the background art. on by default; the settings menu sets
+    `data-text-glow="off"` on <html> to disable it. links inside keep their own colours. */
+main p.text-fg-muted,
+main .text-fg-muted p,
+footer .text-fg-muted p {
+  transition:
+    color 220ms ease,
+    text-shadow 220ms ease;
+}
+
+html:not([data-text-glow="off"]) main p.text-fg-muted:hover,
+html:not([data-text-glow="off"]) main .text-fg-muted p:hover,
+html:not([data-text-glow="off"]) footer .text-fg-muted p:hover {
+  color: var(--text-glow);
+  text-shadow:
+    0 0 10px color-mix(in srgb, var(--hover-bright) 55%, transparent),
+    0 0 26px color-mix(in srgb, var(--hover-bright) 30%, transparent);
 }
 
 /* boxed nav items: hairline box; grey labels go yellow on hover, the white ST mark goes teal */
@@ -167,19 +196,76 @@ main {
   transition:
     color 180ms ease,
     border-color 180ms ease,
-    background-color 180ms ease;
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    text-shadow 180ms ease;
 }
 
-/*! `aria-expanded="true"` keeps toggle (settings) lit while panel is open. this lives here rather than as util class because unlayered `.nav-box` would out-rank tailwind's utils */
+/* `aria-expanded="true"` keeps toggle (settings) lit while panel is open. this lives here rather than as util class because unlayered `.nav-box` would out-rank tailwind's utils */
 .nav-box:hover,
 .nav-box[aria-expanded="true"] {
   color: var(--hover-muted);
   border-color: currentColor;
   background-color: var(--bg-raised);
+  /* glow in item's own hover color: halo outside, wash inside, + label glow */
+  box-shadow:
+    0 0 10px color-mix(in srgb, currentColor 65%, transparent),
+    0 0 26px color-mix(in srgb, currentColor 35%, transparent),
+    inset 0 0 10px color-mix(in srgb, currentColor 18%, transparent);
+  text-shadow:
+    0 0 8px color-mix(in srgb, currentColor 75%, transparent),
+    0 0 18px color-mix(in srgb, currentColor 45%, transparent);
 }
 
-.nav-box.text-fg:hover {
+/* data-tone="teal" */
+.nav-box.text-fg:hover,
+.nav-box[data-tone="teal"]:hover,
+.nav-box[data-tone="teal"][aria-expanded="true"] {
   color: var(--hover-bright);
+}
+
+/* nav tooltips: pure css frm `data-tip`, hover-capable devices only (1 tap would leave it stuck) hidden while item's own panel is open */
+.nav-box[data-tip] {
+  position: relative;
+}
+
+@media (hover: hover) {
+  .nav-box[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 50%;
+    z-index: 60;
+    transform: translate(-50%, -4px);
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 0.375rem;
+    background: var(--bg-raised);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-shadow: none;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .nav-box[data-tip]:hover::after,
+  .nav-box[data-tip]:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .nav-box[data-tip][aria-expanded="true"]::after {
+    opacity: 0;
+  }
 }
 
 /* skill / tech pills: outline lights up to pill's own accent w thin outer ring */
