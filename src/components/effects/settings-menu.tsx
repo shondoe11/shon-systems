@@ -136,7 +136,7 @@ function Group({
   title: string;
   enabled: boolean;
   onToggle: (v: boolean) => void;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   return (
     <fieldset className="space-y-2.5 border-t border-hairline pt-3 first:border-t-0 first:pt-0">
@@ -144,9 +144,11 @@ function Group({
         <legend className="font-display text-sm font-medium text-fg">{title}</legend>
         <Switch checked={enabled} onChange={onToggle} label={`${title} on or off`} />
       </div>
-      <div className={`space-y-2 ${enabled ? "" : "pointer-events-none opacity-40"}`} aria-disabled={!enabled}>
-        {children}
-      </div>
+      {children && (
+        <div className={`space-y-2 ${enabled ? "" : "pointer-events-none opacity-40"}`} aria-disabled={!enabled}>
+          {children}
+        </div>
+      )}
     </fieldset>
   );
 }
@@ -157,6 +159,8 @@ type Patch = (s: EffectsSettings) => EffectsSettings;
 const set =
   <K extends keyof EffectsSettings>(group: K, part: Partial<EffectsSettings[K]>): Patch =>
   (s) => ({ ...s, [group]: { ...s[group], ...part } });
+
+const GROUPS = ["cursor", "spark", "background", "borders", "textGlow"] as const;
 
 export function SettingsMenu() {
   const [open, setOpen] = useState(false);
@@ -181,14 +185,32 @@ export function SettingsMenu() {
     };
   }, [open]);
 
-  const { cursor, spark, background, borders } = settings;
+  const { cursor, spark, background, borders, textGlow } = settings;
   const isDefault = JSON.stringify(settings) === JSON.stringify(DEFAULTS);
+
+  //& text glow = plain css keyed off <html data-text-glow>; default (attribute absent) is on
+  useEffect(() => {
+    const root = document.documentElement;
+    if (textGlow.enabled) delete root.dataset.textGlow;
+    else root.dataset.textGlow = "off";
+  }, [textGlow.enabled]);
+
+  //& master switch: on if anything is on; flipping it sets every group at once
+  const anyOn = GROUPS.some((g) => settings[g].enabled);
+  const setAll = (enabled: boolean) =>
+    updateSettings((s) => {
+      const next = { ...s };
+      for (const g of GROUPS) Object.assign(next, { [g]: { ...s[g], enabled } });
+      return next;
+    });
 
   return (
     <div ref={rootRef} className="relative">
       <button
         type="button"
         aria-label="Effect settings"
+        data-tip="settings"
+        data-tone="teal"
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={panelId}
@@ -205,6 +227,11 @@ export function SettingsMenu() {
           aria-label="Effect settings"
           className="absolute right-0 top-full z-50 mt-2 max-h-[calc(100dvh-5.5rem)] w-[min(20rem,calc(100vw-2.5rem))] space-y-3 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-bg/90 p-4 shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-md"
         >
+          <div className="flex items-center justify-between">
+            <span className="font-display text-sm font-semibold text-fg">All effects</span>
+            <Switch checked={anyOn} onChange={setAll} label="All effects on or off" />
+          </div>
+
           <Group
             title="Cursor glow"
             enabled={cursor.enabled}
@@ -478,6 +505,12 @@ export function SettingsMenu() {
               />
             </Row>
           </Group>
+
+          <Group
+            title="Text glow"
+            enabled={textGlow.enabled}
+            onToggle={(v) => updateSettings(set("textGlow", { enabled: v }))}
+          />
 
           <div className="flex items-center justify-between border-t border-hairline pt-3 text-xs">
             <span className="text-fg-faint">Saved in this browser</span>
