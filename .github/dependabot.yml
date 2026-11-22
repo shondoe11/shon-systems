@@ -1,0 +1,27 @@
+# weekly dependency updates; security advisories open pr as soon as GH knows abt them
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # 1 pr fr routine minor/patch bumps instead of 1/pkg
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # vendored reactbits components written against these majors
+      - dependency-name: three
+        update-types: [version-update:semver-major, version-update:semver-minor]
+      - dependency-name: "@types/three"
+        update-types: [version-update:semver-major, version-update:semver-minor]
+      - dependency-name: vgpu
+        update-types: [version-update:semver-major, version-update:semver-minor]
+      - dependency-name: motion
+        update-types: [version-update:semver-major]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
