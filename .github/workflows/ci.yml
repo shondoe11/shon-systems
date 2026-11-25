@@ -16,13 +16,15 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run lint
+      # next gens global route types (LayoutProps etc.) into .next/types, fresh checkout has none
+      - run: npx next typegen
       - run: npx tsc --noEmit
       - name: audit shipped dependencies
         run: npm audit --omit=dev --audit-level=high
